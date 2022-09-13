@@ -5,14 +5,17 @@
 const int __INT32_MIN__ = -__INT32_MAX__ - 1;
 
 // slow but easy to make sorting alogirthm lol
-void sortList(int* &list, size_t N){
+int* sortList(int* list, size_t N){
+    if(N == 0){
+        throw std::invalid_argument("Array is empty");
+    }
     int* newList = new int[N];
     int highestNum = __INT32_MIN__;
     size_t highestIndex = 0;
-    for(int i = 0; i < N; ++i){
+    for(size_t i = 0; i < N; ++i){
         highestNum = __INT32_MIN__;
         highestIndex = 0;
-        for(int j = 0; j < N; ++j){
+        for(size_t j = 0; j < N; ++j){
             if (list[j] > highestNum){
                 highestNum = list[j];
                 highestIndex = j;
@@ -23,10 +26,26 @@ void sortList(int* &list, size_t N){
     }
 
     delete[] list;
-    list = newList;
+    
+    return newList;
 }
 
 int select(size_t k, const int* list, size_t N) {
-    // TODO(student): solve the selection problem
-    return N;
+    if(k > N || k == 0){
+        throw std::invalid_argument("k exceeds the number of entries in the array");
+    }
+
+    int* copyList = new int[N];
+
+    for(size_t i = 0; i < N; ++i){
+        copyList[i] = list[i];
+    }
+
+    copyList = sortList(copyList, N);
+
+    int selectedNum = copyList[k-1];
+
+    delete[] copyList;
+
+    return selectedNum;
 }

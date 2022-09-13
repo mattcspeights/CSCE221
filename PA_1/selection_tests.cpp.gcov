@@ -1,0 +1,27 @@
+        -:    0:Source:selection_tests.cpp
+        -:    0:Graph:selection_tests.gcno
+        -:    0:Data:selection_tests.gcda
+        -:    0:Runs:1
+        -:    1:#include "selection.cpp"
+        -:    2:
+        1:    3:void printArray(int* list, size_t size){
+        7:    4:    for (size_t i = 0; i < size; ++i){
+        6:    5:        std::cout << list[i] << ", ";
+        -:    6:    }
+        1:    7:    std::cout << std::endl;
+        1:    8:}
+        -:    9:
+        1:   10:int main(){
+        -:   11:    //testSort 1
+        1:   12:    int* sortTest1 = new int[6]{10, 30, 20, 60, 100, 5};
+        1:   13:    int* sortTest2 = new int[6]{10, 30, 20, 60, 100, 5};
+        -:   14:
+        -:   15:
+        1:   16:    int* sortedList = sortList(sortTest1, 6);
+        1:   17:    printArray(sortedList, 6);
+        -:   18:
+        1:   19:    std::cout << select(2, sortTest2, 6) << std::endl;
+        -:   20:
+        1:   21:    delete[] sortedList;
+        1:   22:    delete[] sortTest2;
+        1:   23:}
