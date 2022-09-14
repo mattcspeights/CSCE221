@@ -6,9 +6,6 @@ const int __INT32_MIN__ = -__INT32_MAX__ - 1;
 
 // slow but easy to make sorting alogirthm lol
 int* sortList(int* list, size_t N){
-    if(N == 0){
-        throw std::invalid_argument("Array is empty");
-    }
     int* newList = new int[N];
     int highestNum = __INT32_MIN__;
     size_t highestIndex = 0;
@@ -33,6 +30,12 @@ int* sortList(int* list, size_t N){
 int select(size_t k, const int* list, size_t N) {
     if(k > N || k == 0){
         throw std::invalid_argument("k exceeds the number of entries in the array");
+    }
+    if(N == 0){
+        throw std::invalid_argument("Array is empty");
+    }
+    if(list == nullptr){
+        throw std::invalid_argument("Array is empty");
     }
 
     int* copyList = new int[N];
