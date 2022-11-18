@@ -1,0 +1,43 @@
+        -:    0:Source:collection_tests.cpp
+        -:    0:Graph:collection_tests.gcno
+        -:    0:Data:collection_tests.gcda
+        -:    0:Runs:1
+        -:    1:#include "collection.h"
+        -:    2:#include <iostream>
+        -:    3:
+        1:    4:int main(){
+        -:    5:    //testCollection 1
+        2:    6:    Collection<int> testCollection;
+        -:    7:
+        2:    8:    Collection<int> testCollection2;
+        -:    9:    
+        1:   10:    testCollection.insert(8);
+        1:   11:    testCollection.insert(20);
+        1:   12:    testCollection.insert(40);
+        1:   13:    testCollection.insert(30);
+        1:   14:    testCollection.insert(50);
+        1:   15:    testCollection.insert(24);
+        1:   16:    testCollection.insert(28);
+        1:   17:    testCollection.insert(29);
+        1:   18:    if (testCollection.contains(8)){
+        1:   19:        testCollection.remove(8);
+        -:   20:    }
+        -:   21:
+        1:   22:    testCollection2 = testCollection;
+        -:   23:
+        1:   24:    testCollection.remove(20);
+        1:   25:    testCollection.remove(40);
+        1:   26:    testCollection.remove(30);
+        1:   27:    testCollection.remove(50);
+        1:   28:    testCollection.remove(24);
+        1:   29:    testCollection.remove(28);
+        1:   30:    testCollection.remove(29);
+       1*:   31:    for(size_t i = 0; i < testCollection.size(); ++i){
+    #####:   32:        std::cout << testCollection2.returnIndex(i) << " ";
+        -:   33:    }
+        -:   34:
+        1:   35:    std::cout << std::endl << "Done Testing" << std::endl;
+        -:   36:
+        -:   37:    
+        -:   38:    
+        1:   39:}

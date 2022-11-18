@@ -36,7 +36,7 @@ class Collection {
 
         // copy assignment operator
         Collection& operator=(const Collection& other){
-            if(this != &other){
+            if(this == &other){
                 return *this;
             }
 
@@ -47,7 +47,7 @@ class Collection {
 
             if(other.capacity != 0){
 
-                list = new Object[other.capacity];
+                list = new Object[other.capacity]{};
 
                 for(size_t i = 0; i < list_size; ++i){
                     list[i] = other.list[i];
@@ -132,7 +132,6 @@ class Collection {
         }
 
         void remove(const Object& obj){
-            std::cout << this->capacity << " " << this->list_size << std::endl;
             for(size_t i = 0; i < this->list_size; ++i){
                 if (this->list[i] == obj){
                     for(size_t j = i; j < this->list_size - 1; ++j){
@@ -142,7 +141,6 @@ class Collection {
                     break;
                 }
             }
-            std::cout << this->capacity << " " << this->list_size << std::endl;
         }
 
         bool contains(const Object& obj) const{

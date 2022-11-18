@@ -4,9 +4,9 @@
 
 #include <stdexcept>
 
-template <typename Object>
+template <typename T>
 class ArrayList {
-    Object* list;
+    T* list;
     size_t list_size;
     size_t list_capacity;
 
@@ -21,7 +21,7 @@ class ArrayList {
         }
 
         ArrayList(size_t capacity = 1): list{}, list_size(0), list_capacity(capacity) {
-            list = new Object[capacity];
+            list = new T[capacity];
         }
 
         ~ArrayList(){
@@ -30,7 +30,7 @@ class ArrayList {
 
         ArrayList(const ArrayList& other): list{}, list_size(0), list_capacity(0){
             if (other.list != nullptr && other.list_capacity != 0){
-                Object* newList = new Object[other.list_capacity];
+                T* newList = new T[other.list_capacity];
 
                 for (size_t i = 0; i < other.list_size; ++i){
                     newList[i] = other.list[i];
@@ -43,12 +43,12 @@ class ArrayList {
         }
 
         ArrayList& operator=(const ArrayList& other){
-            if (this->list == other.list){
+            if (this == &other){
                 return *this;
             }
 
             if (other.list != nullptr && other.list_capacity != 0){
-                Object* newList = new Object[other.list_capacity];
+                T* newList = new T[other.list_capacity];
 
                 for (size_t i = 0; i < other.list_size; ++i){
                     newList[i] = other.list[i];
@@ -64,8 +64,8 @@ class ArrayList {
             return *this;
         }
 
-        Object& operator[](size_t index){
-            if (index > list_size){
+        T& operator[](size_t index){
+            if (index >= list_size){
                 throw std::invalid_argument("Index out of bounds");
             }
 
@@ -74,14 +74,14 @@ class ArrayList {
 
         void resize(){
 
-            Object* newList = nullptr;
+            T* newList = nullptr;
 
             if (this->is_empty()){
-                newList = new Object[1];
+                newList = new T[1];
                 this->list_capacity = 1;
             }
             else{
-                newList = new Object[this->list_capacity * 2];
+                newList = new T[this->list_capacity * 2];
                 this->list_capacity = 2 * this->list_capacity;
             }
             
@@ -106,7 +106,7 @@ class ArrayList {
             return false;
         }
 
-        void insert(size_t index, const Object& obj){
+        void insert(size_t index, const T& obj){
             if (index > list_size){
                 throw std::invalid_argument("Index out of bounds");
             }
@@ -120,7 +120,7 @@ class ArrayList {
                     this->resize();
                 }
                 for (size_t i = this->list_size; i > index; --i){
-                    Object temp = this->list[i - 1];
+                    T temp = this->list[i - 1];
                     this->list[i] = temp;
                 }
                 this->list[index] = obj;
@@ -130,7 +130,7 @@ class ArrayList {
         }
 
         void remove(size_t index){
-            if (index > list_size){
+            if (index >= list_size){
                 throw std::invalid_argument("Index out of bounds");
             }
 

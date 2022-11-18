@@ -1,0 +1,189 @@
+        -:    0:Source:doubly_linked_list.h
+        -:    0:Graph:doubly_linked_list_tests.gcno
+        -:    0:Data:doubly_linked_list_tests.gcda
+        -:    0:Runs:1
+        -:    1:#pragma once
+        -:    2:#include <cstddef>
+        -:    3:#include <stdexcept>
+        -:    4:template<typename T>
+        -:    5:struct Node{
+        -:    6:    Node* next;
+        -:    7:    Node* prev;
+        -:    8:    T value;
+        -:    9:
+       12:   10:    Node(const Node& other): next(0), prev(0), value(other.value){}
+        6:   11:    Node(T value): next(0), prev(0), value(value){}
+        -:   12:};
+        -:   13:
+        -:   14:template <typename T>
+        -:   15:class DoublyLinkedList {
+        -:   16:    Node<T>* head;
+        -:   17:    Node<T>* tail;
+        -:   18:    size_t list_size;
+        -:   19:
+        -:   20:    public:
+        1:   21:        DoublyLinkedList(): head(nullptr), tail(nullptr), list_size(0){}
+        -:   22:
+        3:   23:        ~DoublyLinkedList(){
+        3:   24:            Node<T>* helper = head;
+       15:   25:            while(helper != nullptr){
+       12:   26:                head = head->next;
+       12:   27:                delete helper;
+       12:   28:                helper = head;
+        -:   29:            }
+        3:   30:        }
+        -:   31:
+        8:   32:        size_t size() const{
+        8:   33:            return this->list_size;
+        -:   34:        }
+        -:   35:
+        2:   36:        DoublyLinkedList(const DoublyLinkedList<T>& other): head(nullptr), tail(nullptr), list_size(other.list_size){
+        2:   37:            Node<T>* n1 = 0;
+        2:   38:            Node<T>* n2 = 0;
+        -:   39:            Node<T>* newNode;
+        2:   40:            if (other.head == 0){
+    #####:   41:                head = 0;
+        -:   42:            }
+        -:   43:            else{
+        2:   44:                newNode = new Node<T>(*other.head);
+        2:   45:                head = newNode;
+        2:   46:                n1 = newNode;
+        2:   47:                n2 = other.head->next;
+        -:   48:            }
+       12:   49:            while(n2 != nullptr){
+       10:   50:                newNode = new Node<T>(*n2);
+       10:   51:                n1->next = newNode;
+       10:   52:                newNode->prev = n1;
+       10:   53:                n1 = n1->next;
+       10:   54:                n2 = n2->next;
+       10:   55:                if (n2 == nullptr){
+        2:   56:                    tail = newNode;
+        2:   57:                    newNode->next = nullptr;
+        -:   58:                }
+        -:   59:            }
+        -:   60:
+        2:   61:        }
+        -:   62:
+        -:   63:        DoublyLinkedList<T>& operator=(const DoublyLinkedList<T>& other){
+        -:   64:            if (this == &other){
+        -:   65:                return *this;
+        -:   66:            }
+        -:   67:
+        -:   68:            Node<T>* n1 = 0;
+        -:   69:            Node<T>* n2 = 0;
+        -:   70:            Node<T>* newNode;
+        -:   71:            if (other.head == 0){
+        -:   72:                head = 0;
+        -:   73:            }
+        -:   74:            else{
+        -:   75:                newNode = new Node<T>(*other.head);
+        -:   76:                head = newNode;
+        -:   77:                tail = newNode;
+        -:   78:                n1 = newNode;
+        -:   79:                n2 = other.head->next;
+        -:   80:            }
+        -:   81:            while(n2 != nullptr){
+        -:   82:                newNode = new Node<T>(*n2);
+        -:   83:                n1->next = newNode;
+        -:   84:                newNode->prev = n1;
+        -:   85:                n1 = n1->next;
+        -:   86:                n2 = n2->next;
+        -:   87:            }
+        -:   88:
+        -:   89:            return *this;
+        -:   90:        }
+        -:   91:
+        6:   92:        void insert(size_t index, const T& object){
+        6:   93:            if (index > this->list_size){
+    #####:   94:                throw std::out_of_range("Index out of range");
+        -:   95:            }
+        -:   96:
+        6:   97:            Node<T>* newNode = new Node(object);
+        -:   98:            Node<T>* n1;
+        -:   99:            Node<T>* n2;
+        -:  100:
+        6:  101:            if (index == 0){
+        2:  102:                if (this->head == 0){
+        1:  103:                    this->head = newNode;
+        1:  104:                    this->tail = newNode;
+        -:  105:                }
+        -:  106:                else{
+        1:  107:                    newNode->next = this->head;
+        1:  108:                    this->head->prev = newNode;
+        1:  109:                    this->head = newNode;
+        -:  110:                }
+        -:  111:            }
+        4:  112:            else if (index == this->list_size){
+        2:  113:                this->tail->next = newNode;
+        2:  114:                newNode->next = 0;
+        2:  115:                newNode->prev = this->tail;
+        2:  116:                this->tail = newNode;
+        -:  117:            }
+        -:  118:            else{
+        2:  119:                n1 = this->head;
+        5:  120:                for (size_t i = 0; i < index - 1; ++i){
+        3:  121:                    n1 = n1->next;
+        -:  122:                }
+        2:  123:                n2 = n1->next;
+        2:  124:                n1->next = newNode;
+        2:  125:                newNode->prev = n1;
+        2:  126:                newNode->next = n2;
+        2:  127:                n2->prev = newNode;
+        -:  128:            }
+        -:  129:
+        6:  130:            this->list_size++;
+        6:  131:        }
+        -:  132:
+        6:  133:        void remove(size_t index){
+        6:  134:            if (index > this->list_size || this->list_size == 0){
+    #####:  135:                throw std::out_of_range("Index out of range");
+        -:  136:            }
+        -:  137:            
+        6:  138:            Node<T>* n1 = this->head;
+        -:  139:
+        6:  140:            if (index == 0){
+        5:  141:                if (this->list_size == 1){
+        1:  142:                    delete this->head;
+        1:  143:                    this->head = 0;
+        1:  144:                    this->tail = 0;
+        -:  145:                }
+        -:  146:                else{
+        4:  147:                    this->head = this->head->next;
+        4:  148:                    delete n1;
+        -:  149:                }
+        -:  150:            }
+        -:  151:            else{
+        6:  152:                for (size_t i = 0; i < index; ++i){
+        5:  153:                    n1 = n1->next;
+        -:  154:                }
+        -:  155:
+        1:  156:                n1->prev->next = n1->next;
+        1:  157:                if (index != list_size - 1){
+    #####:  158:                    n1->next->prev = n1->prev;
+        -:  159:                }
+        1:  160:                if (index == list_size - 1){
+        1:  161:                    this->tail = n1->prev;
+        -:  162:                }
+        1:  163:                delete n1;
+        -:  164:
+        -:  165:            }
+        6:  166:            this->list_size--;
+        6:  167:        }
+        -:  168:
+        6:  169:        T& operator[](size_t index){
+        6:  170:            if (index >= this->list_size){
+    #####:  171:                throw std::out_of_range("Index out of range");
+        -:  172:            }
+        6:  173:            Node<T>* n1 = this->head;
+       11:  174:            for (size_t i = 0; i < index; ++i){
+        5:  175:                n1 = n1->next;
+        -:  176:            }
+        6:  177:            return n1->value;
+        -:  178:        }
+        -:  179:
+        1:  180:        T& getTail(){
+        1:  181:            return tail->value;
+        -:  182:        }
+        -:  183:
+        -:  184:
+        -:  185:};
