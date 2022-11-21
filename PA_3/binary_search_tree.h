@@ -6,7 +6,7 @@ struct Node{
 
     Node(const Node& other): right(0), left(0), value(other.value){}
     Node(T value): right(0), left(0), value(value){}
-    Node(const Node* other): righ
+    Node(const Node* other): right(other->right), left(other->left), value(other->value){}
 };
 
 template <typename T>
