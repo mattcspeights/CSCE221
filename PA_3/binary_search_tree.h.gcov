@@ -1,0 +1,222 @@
+        -:    0:Source:binary_search_tree.h
+        -:    0:Graph:binary_search_tree_tests.gcno
+        -:    0:Data:binary_search_tree_tests.gcda
+        -:    0:Runs:1
+        -:    1:#pragma once
+        -:    2:#include <iostream>
+        -:    3:#include <stdexcept>
+        -:    4:#include <cstddef>
+        -:    5:#include <utility>
+        -:    6:#include <sstream>
+        -:    7:template<typename T>
+        -:    8:struct Node{
+        -:    9:    Node<T>* right;
+        -:   10:    Node<T>* left;
+        -:   11:    T value;
+        -:   12:
+        6:   13:    Node(const Node& other): right(0), left(0), value(other.value){}
+        9:   14:    Node(const T& value): right(0), left(0), value(value){}
+        -:   15:    Node(const Node* other): right(other->right), left(other->left), value(other->value){}
+        -:   16:};
+        -:   17:
+        -:   18:template <typename T>
+        -:   19:class BinarySearchTree {
+        -:   20:    Node<T>* root;
+        -:   21:
+        -:   22:    public:
+        1:   23:        BinarySearchTree(): root(0){}
+        -:   24:
+       14:   25:        Node<T>* recursiveCopy(Node<T>* other){
+       14:   26:            if (other == 0){
+        8:   27:                return 0;
+        -:   28:            }
+        6:   29:            Node<T>* newNode = new Node<T>(*other);
+        6:   30:            newNode->left = recursiveCopy(other->left);
+        6:   31:            newNode->right = recursiveCopy(other->right);
+        6:   32:            return newNode;
+        -:   33:        }
+        -:   34:
+        2:   35:        BinarySearchTree(const BinarySearchTree& other): root(0){
+        2:   36:            this->root = recursiveCopy(other.root);
+        2:   37:        }
+        -:   38:
+        -:   39:        BinarySearchTree& operator=(const BinarySearchTree& other){
+        -:   40:            if (this != &other){
+        -:   41:                if (this->root != 0){
+        -:   42:                    recursiveDelete(root);
+        -:   43:                    root = recursiveCopy(other.root);
+        -:   44:                }
+        -:   45:            }
+        -:   46:
+        -:   47:            return *this;
+        -:   48:        }
+        -:   49:
+       15:   50:        void recursiveDelete(Node<T>* other){
+       15:   51:            if (other != 0){
+        6:   52:                recursiveDelete(other->left);
+        6:   53:                recursiveDelete(other->right);
+        6:   54:                delete other;
+        6:   55:                other = nullptr;
+        -:   56:            }
+        -:   57:            
+       15:   58:        }
+        -:   59:
+        3:   60:        ~BinarySearchTree(){
+        3:   61:            recursiveDelete(this->root);
+        3:   62:        }
+        -:   63:
+       21:   64:        void recursiveInsert(Node<T>* node, const T& object){
+       21:   65:            if (node == 0){
+        1:   66:                Node<T>* newNode = new Node(object);
+        1:   67:                root = newNode;
+        -:   68:            }
+       20:   69:            else if (node->value > object){
+        7:   70:                if (node->left == 0){
+        3:   71:                    Node<T>* newNode = new Node(object);
+        3:   72:                    node->left = newNode;
+        -:   73:                }
+        -:   74:                else{
+        4:   75:                    recursiveInsert(node->left, object);
+        -:   76:                }
+        -:   77:            }
+       13:   78:            else if (node->value < object){
+       13:   79:                if (node->right == 0){
+        5:   80:                    Node<T>* newNode = new Node(object);
+        5:   81:                    node->right = newNode;
+        -:   82:                }
+        -:   83:                else{
+        8:   84:                    recursiveInsert(node->right, object);
+        -:   85:                }
+        -:   86:            }
+       21:   87:        }
+        -:   88:
+        9:   89:        void insert(const T& object){
+        9:   90:            recursiveInsert(this->root, object);
+        9:   91:        }
+        -:   92:
+       45:   93:        void recursiveRemove(Node<T>* prev, Node<T>* helper, const T& object){
+       45:   94:            if (helper != 0){
+       27:   95:                if (helper->value == object){
+        9:   96:                    if (prev == 0){
+        5:   97:                        if (helper->left != 0){
+        2:   98:                            helper->value = deleteMax(helper, helper->left);
+        -:   99:                        }
+        3:  100:                        else if (helper->right != 0){
+        2:  101:                            root = helper->right;
+        2:  102:                            delete helper;
+        -:  103:                        }
+        -:  104:                        else{
+        1:  105:                            root = 0;
+        1:  106:                            delete helper;
+        -:  107:                        }
+        -:  108:                    }
+        -:  109:                    else{
+        4:  110:                        if (helper->left != 0){
+        1:  111:                            helper->value = deleteMax(helper, helper->left);
+        -:  112:                        }
+        3:  113:                        else if (helper->right != 0){
+        1:  114:                            if (prev->left == helper){
+    #####:  115:                                prev->left = helper->right;
+        -:  116:                            }
+        -:  117:                            else{
+        1:  118:                                prev->right = helper->right;
+        -:  119:                            }
+        1:  120:                            delete helper;
+        -:  121:                        }
+        -:  122:                        else{
+        2:  123:                            if (prev->left == helper){
+        1:  124:                                prev->left = 0;
+        -:  125:                            }
+        -:  126:                            else{
+        1:  127:                                prev->right = 0;
+        -:  128:                            }
+        2:  129:                            delete helper;
+        -:  130:                        }
+        -:  131:                    }
+        -:  132:                    
+        -:  133:                }
+        -:  134:                else{
+       18:  135:                    recursiveRemove(helper, helper->left, object);
+       18:  136:                    recursiveRemove(helper, helper->right, object);
+        -:  137:                }
+        -:  138:            }
+       45:  139:        }
+        -:  140:
+        9:  141:        void remove(const T& object){
+        9:  142:            recursiveRemove(0, root, object);
+        9:  143:        }
+        -:  144:
+        2:  145:        void print_tree() const{
+        2:  146:            recursivePrint(root);
+        2:  147:        }
+        -:  148:
+       14:  149:        void recursivePrint(const Node<T>* node) const{
+       14:  150:            if (node != 0){
+        6:  151:                std::cout << node->value << std::endl;
+        6:  152:                recursivePrint(node->left);
+        6:  153:                recursivePrint(node->right);
+        -:  154:            }
+       14:  155:        }
+        -:  156:
+        1:  157:        const T& find_min(){
+        1:  158:            Node<T>* helper = root;
+        2:  159:            while (helper->left != 0){
+        1:  160:                helper = helper->left;
+        -:  161:            }
+        -:  162:
+        1:  163:            return helper->value;
+        -:  164:        }
+        -:  165:
+        1:  166:        const T& find_max(){
+        1:  167:            Node<T>* helper = root;
+        2:  168:            while (helper->right != 0){
+        1:  169:                helper = helper->right;
+        -:  170:            }
+        -:  171:
+        1:  172:            return helper->value;
+        -:  173:        }
+        -:  174:
+        3:  175:        T deleteMax(Node<T>* prev, Node<T>* node){
+        3:  176:            Node<T>* helper = node;
+        3:  177:            Node<T>* helperPrev = prev;
+        4:  178:            while (helper->right != 0){
+        1:  179:                helperPrev = helper;
+        1:  180:                helper = helper->right;
+        -:  181:            }
+        -:  182:
+        3:  183:            T helperValue = helper->value;
+        3:  184:            if (helperPrev != prev){
+        1:  185:                helperPrev->right = 0;
+        -:  186:            }
+        -:  187:            else{
+        2:  188:                helperPrev->left = 0;
+        -:  189:            }
+        3:  190:            delete helper;
+        3:  191:            return helperValue;
+        -:  192:        }
+        -:  193:
+        2:  194:        bool recursiveContains(Node<T>* helper, const T& object){
+        2:  195:            if (helper == 0){
+    #####:  196:                return false;
+        -:  197:            }
+        2:  198:            else if (helper->value == object){
+        1:  199:                return true;
+        -:  200:            }
+        -:  201:            else{
+        1:  202:                if (recursiveContains(helper->left, object)){
+        1:  203:                    return true;
+        -:  204:                }
+    #####:  205:                if (recursiveContains(helper->right, object)){
+    #####:  206:                    return true;
+        -:  207:                }
+        -:  208:            }
+    #####:  209:            return false;
+        -:  210:        }
+        -:  211:
+        1:  212:        bool contains(const T& object){
+        1:  213:            return recursiveContains(root, object);
+        -:  214:        }
+        -:  215:
+        -:  216:
+        -:  217:
+        -:  218:};
