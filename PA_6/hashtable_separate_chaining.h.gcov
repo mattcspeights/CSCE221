@@ -1,0 +1,166 @@
+        -:    0:Source:hashtable_separate_chaining.h
+        -:    0:Graph:hashtable_separate_chaining_tests.gcno
+        -:    0:Data:hashtable_separate_chaining_tests.gcda
+        -:    0:Runs:1
+        -:    1:#pragma once
+        -:    2:#include <functional>
+        -:    3:#include <iostream>
+        -:    4:#include <list>
+        -:    5:#include <sstream>
+        -:    6:#include <stdexcept>
+        -:    7:#include <vector>
+        -:    8:
+        -:    9:using std::vector, std::cout, std::endl;
+        -:   10:
+        -:   11:template <class Key, class Hash=std::hash<Key>>
+        -:   12:class HashTable {
+        -:   13:    vector<vector<Key>> table;
+        -:   14:    size_t loadFactor;
+        -:   15:    size_t maxLoadFactor;
+        -:   16:
+        -:   17:    public:
+        2:   18:        HashTable(): table(vector<vector<Key>>(11)), loadFactor(0), maxLoadFactor(1){}
+        2:   19:        explicit HashTable(size_t size): table(vector<vector<Key>>(size)), loadFactor(0), maxLoadFactor(1){}
+        -:   20:
+        1:   21:        bool is_empty() const {
+       1*:   22:            for (size_t i = 0; i < table.size(); i++){
+        1:   23:                if (!table.at(i).empty()){
+        1:   24:                    return false;
+        -:   25:                }
+        -:   26:            }
+    #####:   27:            return true;
+        -:   28:        }
+        -:   29:
+       48:   30:        size_t size() const {
+       48:   31:            size_t total = 0;
+      888:   32:            for (size_t i = 0; i < table.size(); i++){
+      840:   33:                total += table.at(i).size();
+        -:   34:            }
+       48:   35:            return total;
+        -:   36:        }
+        -:   37:
+        -:   38:        void make_empty(){
+        -:   39:            for (size_t i = 0; i < table.size(); i++){
+        -:   40:                table.at(i).clear();
+        -:   41:            }
+        -:   42:            loadFactor = 0;
+        -:   43:        }
+        -:   44:
+       47:   45:        void insert(const Key& value){
+      47*:   46:            size_t hash_value = Hash{}(value)  % table.size();
+       47:   47:            table.at(hash_value).push_back(value);
+      47*:   48:            loadFactor = this->size() / table.size();
+       47:   49:            this->rehash();
+       47:   50:        }
+        -:   51:
+        -:   52:        size_t remove(const Key& value){
+        -:   53:            size_t hash_value = Hash{}(value) % table.size();
+        -:   54:            for (size_t i = 0; i < table.at(hash_value).size(); ++i){
+        -:   55:                if (table.at(hash_value).at(i) == value){
+        -:   56:                    table.at(hash_value).erase(i);
+        -:   57:                    return 1;
+        -:   58:                }
+        -:   59:            }
+        -:   60:            return 0;
+        -:   61:        }
+        -:   62:
+        -:   63:        void rehash(size_t numBuckets){
+        -:   64:            if (numBuckets != table.size()){
+        -:   65:                vector<Key> values;
+        -:   66:                for (size_t i = 0; i < table.size(); ++i){
+        -:   67:                    for (size_t j = 0; j < table.at(i).size(); ++j){
+        -:   68:                        values.insert(table.at(i).at(j));
+        -:   69:                    }
+        -:   70:                }
+        -:   71:                HashTable newTable(numBuckets);
+        -:   72:                newTable.maxLoadFactor = this->maxLoadFactor;
+        -:   73:                for (Key i : values){
+        -:   74:                    newTable.insert(i);
+        -:   75:                }
+        -:   76:                this->table = newTable.table;
+        -:   77:                loadFactor = this->size() / table.size();
+        -:   78:            }
+        -:   79:        }
+        -:   80:
+       47:   81:        void rehash(){
+       47:   82:            if (loadFactor > maxLoadFactor){
+        2:   83:                vector<Key> values;
+       12:   84:                for (size_t i = 0; i < table.size(); ++i){
+       33:   85:                    for (size_t j = 0; j < table.at(i).size(); ++j){
+       22:   86:                        values.push_back(table.at(i).at(j));
+        -:   87:                    }
+        -:   88:                }
+        1:   89:                size_t newSize = table.size();
+        3:   90:                while(newSize < table.size() * 2){
+        2:   91:                    newSize += 6;
+        -:   92:                }
+        1:   93:                HashTable newTable(newSize);
+        1:   94:                newTable.maxLoadFactor = this->maxLoadFactor;
+       23:   95:                for (Key i : values){
+       22:   96:                    newTable.insert(i);
+        -:   97:                }
+        1:   98:                this->table = newTable.table;
+       1*:   99:                loadFactor = this->size() / table.size();
+        -:  100:            }
+       47:  101:        }
+        -:  102:
+        -:  103:        bool contains(const Key& value) const {
+        -:  104:            size_t hash_value = Hash{}(value)  % table.size();
+        -:  105:            for (size_t i = 0; i < table.at(hash_value).size(); ++i){
+        -:  106:                if (table.at(hash_value).at(i) == value){
+        -:  107:                    return true;
+        -:  108:                }
+        -:  109:            }
+        -:  110:            return false;
+        -:  111:        }
+        -:  112:
+        -:  113:        size_t bucket_count() const {
+        -:  114:            return table.size();
+        -:  115:        }
+        -:  116:
+        -:  117:        size_t bucket_size(size_t index) const {
+        -:  118:            return table.at(index).size();
+        -:  119:        }
+        -:  120:
+        -:  121:        size_t bucket(const Key& value) const {
+        -:  122:            return Hash{}(value) % table.size();
+        -:  123:        }
+        -:  124:
+        -:  125:        float load_factor() const {
+        -:  126:            return loadFactor;
+        -:  127:        }
+        -:  128:
+        -:  129:        float max_load_factor() const {
+        -:  130:            return maxLoadFactor;
+        -:  131:        }
+        -:  132:
+        -:  133:        void max_load_factor(float newLoadFactor){
+        -:  134:            maxLoadFactor = newLoadFactor;
+        -:  135:            this->rehash();
+        -:  136:        }
+        -:  137:
+        1:  138:        void print_table(std::ostream& os=std::cout) const {
+        1:  139:            if (this->is_empty()){
+    #####:  140:                os << "<empty>\n";
+        -:  141:            }
+        -:  142:            else{
+       24:  143:                for (size_t i = 0; i < table.size(); ++i){
+       23:  144:                    if (table.at(i).size() == 0){
+        7:  145:                        os << "[]\n";
+        -:  146:                    }
+        -:  147:                    else{
+       16:  148:                        os << "[";
+       41:  149:                        for (size_t j = 0; j < table.at(i).size(); ++j){
+       25:  150:                            os << table.at(i).at(j);
+       25:  151:                            if (j != table.at(i).size() - 1){
+        9:  152:                                os << ", ";
+        -:  153:                            }
+        -:  154:                        }
+       16:  155:                        os << "]\n";
+        -:  156:                    }
+        -:  157:                }
+        -:  158:            }
+        1:  159:        }
+        -:  160:
+        -:  161:        
+        -:  162:};
