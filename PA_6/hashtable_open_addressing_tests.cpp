@@ -1,35 +1,34 @@
 #include "hashtable_open_addressing.h"
 
 int main() {
-    // HashTable<int> test1;
-    // test1.insert(20);
-    // test1.insert(21);
-    // test1.insert(31);
-    // test1.insert(2);
-    // test1.insert(12);
-    // test1.insert(26);
-    // test1.insert(23);
-    // test1.insert(35);
-    // test1.insert(6);
-    // test1.insert(15);
-    // test1.insert(29);
-    // test1.insert(14);
-    // test1.insert(38);
-    // test1.insert(3);
-    // test1.insert(17);
-    // test1.insert(22);
-    // test1.insert(9);
-    // test1.insert(18);
-    // test1.insert(4);
-    // test1.insert(40);
-    // test1.insert(50);
-    // test1.insert(45);
-    // test1.insert(52);
-    // test1.insert(89);
-    // test1.insert(99);
-    // test1.print_table();
-
-    std::cout << "make an empty hash table with 11 buckets for strings" << std::endl;
+    HashTable<int> test1;
+    test1.insert(20);
+    test1.insert(21);
+    test1.insert(31);
+    test1.insert(2);
+    test1.insert(12);
+    test1.insert(26);
+    test1.insert(23);
+    test1.insert(35);
+    test1.insert(6);
+    test1.insert(15);
+    test1.insert(29);
+    test1.insert(14);
+    test1.insert(38);
+    test1.insert(3);
+    test1.insert(17);
+    test1.insert(22);
+    test1.insert(9);
+    test1.insert(18);
+    test1.insert(4);
+    test1.insert(40);
+    test1.insert(50);
+    test1.insert(45);
+    test1.insert(52);
+    test1.insert(89);
+    test1.insert(99);
+    test1.print_table();
+std::cout << "make an empty hash table with 11 buckets for strings" << std::endl;
     HashTable<std::string> table(11);
 
     std::cout << "initial size is " << table.size() << std::endl;
@@ -94,7 +93,5 @@ int main() {
     table.print_table(ss);
     std::cout << ss.str() << std::endl;
     }
-
-    
     return 0;
 }

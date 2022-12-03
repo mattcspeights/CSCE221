@@ -1,0 +1,347 @@
+        -:    0:Source:hashtable_open_addressing.h
+        -:    0:Graph:hashtable_open_addressing_tests.gcno
+        -:    0:Data:hashtable_open_addressing_tests.gcda
+        -:    0:Runs:1
+        -:    1:#pragma once
+        -:    2:#include <functional>
+        -:    3:#include <iostream>
+        -:    4:#include <list>
+        -:    5:#include <sstream>
+        -:    6:#include <stdexcept>
+        -:    7:#include <vector>
+        -:    8:
+        -:    9:using std::vector, std::cout, std::endl;
+        -:   10:
+        -:   11:template <class Key, class Hash=std::hash<Key>>
+        -:   12:class HashTable {
+        -:   13:    vector<Key> table;
+        -:   14:    size_t numValues;
+        -:   15:    float loadFactor;
+        -:   16:    float maxLoadFactor;
+        -:   17:
+        -:   18:    public:
+        2:   19:        HashTable(): table(vector<Key>(11)), numValues(0), loadFactor(0), maxLoadFactor(.5){}
+       10:   20:        explicit HashTable(size_t size): table(vector<Key>(size)), numValues(0), loadFactor(0), maxLoadFactor(.5){}
+------------------
+_ZN9HashTableIiSt4hashIiEEC2Em:
+        4:   20:        explicit HashTable(size_t size): table(vector<Key>(size)), numValues(0), loadFactor(0), maxLoadFactor(.5){}
+------------------
+_ZN9HashTableINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4hashIS5_EEC2Em:
+        6:   20:        explicit HashTable(size_t size): table(vector<Key>(size)), numValues(0), loadFactor(0), maxLoadFactor(.5){}
+------------------
+        -:   21:
+        -:   22:        HashTable(const HashTable& other): table(other.table), numValues(0), loadFactor(other.loadFactor), maxLoadFactor(other.maxLoadFactor){}
+        -:   23:
+        -:   24:        HashTable& operator=(const HashTable& other){
+        -:   25:            if (this == &other){
+        -:   26:                return *this;
+        -:   27:            }
+        -:   28:            table = other.table;
+        -:   29:            loadFactor = other.loadFactor;
+        -:   30:            maxLoadFactor = other.maxLoadFactor;
+        -:   31:            numValues = other.numValues;
+        -:   32:
+        -:   33:            return *this;
+        -:   34:        }
+        -:   35:
+        4:   36:        bool is_empty() const {
+        4:   37:            if (numValues == 0){
+       1*:   38:                return true;
+        -:   39:            }
+        3:   40:            return false;
+        -:   41:        }
+------------------
+_ZNK9HashTableINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4hashIS5_EE8is_emptyEv:
+        3:   36:        bool is_empty() const {
+        3:   37:            if (numValues == 0){
+        1:   38:                return true;
+        -:   39:            }
+        2:   40:            return false;
+        -:   41:        }
+------------------
+_ZNK9HashTableIiSt4hashIiEE8is_emptyEv:
+        1:   36:        bool is_empty() const {
+        1:   37:            if (numValues == 0){
+    #####:   38:                return true;
+        -:   39:            }
+        1:   40:            return false;
+        -:   41:        }
+------------------
+        -:   42:
+        4:   43:        size_t size() const {
+        4:   44:            return numValues;
+        -:   45:        }
+        -:   46:
+        1:   47:        void make_empty(){
+        1:   48:            size_t cells = table.size();
+        1:   49:            table.clear();
+        1:   50:            loadFactor = 0;
+        1:   51:            numValues = 0;
+        1:   52:            table = vector<Key>(cells);
+        1:   53:        }
+        -:   54:
+      109:   55:        void insert(const Key& value){
+      109:   56:            if (!this->contains(value)){
+      69*:   57:                size_t hash_value = Hash{}(value)  % table.size();
+        -:   58:                // if (table.at(hash_value) == 0){
+       69:   59:                table.at(hash_value) = value;
+        -:   60:                // }
+        -:   61:                // else{
+        -:   62:                //     hash_value++;
+        -:   63:                //     while (table.at(hash_value) == 0){
+        -:   64:                //         hash_value++;
+        -:   65:                //     }
+        -:   66:                //     table.at(hash_value) = value;
+        -:   67:                // }
+       69:   68:                numValues++;
+       69:   69:                loadFactor = (float)this->numValues / (float)table.size();
+       69:   70:                if (loadFactor >= maxLoadFactor){
+        4:   71:                    this->rehash();
+        -:   72:                }
+        -:   73:            }
+      109:   74:        }
+------------------
+_ZN9HashTableINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4hashIS5_EE6insertERKS5_:
+       50:   55:        void insert(const Key& value){
+       50:   56:            if (!this->contains(value)){
+      30*:   57:                size_t hash_value = Hash{}(value)  % table.size();
+        -:   58:                // if (table.at(hash_value) == 0){
+       30:   59:                table.at(hash_value) = value;
+        -:   60:                // }
+        -:   61:                // else{
+        -:   62:                //     hash_value++;
+        -:   63:                //     while (table.at(hash_value) == 0){
+        -:   64:                //         hash_value++;
+        -:   65:                //     }
+        -:   66:                //     table.at(hash_value) = value;
+        -:   67:                // }
+       30:   68:                numValues++;
+       30:   69:                loadFactor = (float)this->numValues / (float)table.size();
+       30:   70:                if (loadFactor >= maxLoadFactor){
+        2:   71:                    this->rehash();
+        -:   72:                }
+        -:   73:            }
+       50:   74:        }
+------------------
+_ZN9HashTableIiSt4hashIiEE6insertERKi:
+       59:   55:        void insert(const Key& value){
+       59:   56:            if (!this->contains(value)){
+      39*:   57:                size_t hash_value = Hash{}(value)  % table.size();
+        -:   58:                // if (table.at(hash_value) == 0){
+       39:   59:                table.at(hash_value) = value;
+        -:   60:                // }
+        -:   61:                // else{
+        -:   62:                //     hash_value++;
+        -:   63:                //     while (table.at(hash_value) == 0){
+        -:   64:                //         hash_value++;
+        -:   65:                //     }
+        -:   66:                //     table.at(hash_value) = value;
+        -:   67:                // }
+       39:   68:                numValues++;
+       39:   69:                loadFactor = (float)this->numValues / (float)table.size();
+       39:   70:                if (loadFactor >= maxLoadFactor){
+        2:   71:                    this->rehash();
+        -:   72:                }
+        -:   73:            }
+       59:   74:        }
+------------------
+        -:   75:
+        2:   76:        size_t remove(const Key& value){
+       72:   77:            for (size_t i = 0; i < table.size(); ++i){
+       71:   78:                if (table.at(i) == value){
+        1:   79:                    table.at(i) = -1;
+        1:   80:                    numValues--;
+        1:   81:                    loadFactor = (float)this->numValues / (float)table.size();
+        1:   82:                    return 1;
+        -:   83:                }
+        -:   84:            }
+        1:   85:            return 0;
+        -:   86:        }
+        -:   87:
+        -:   88:        void rehash(size_t numBuckets){
+        -:   89:            if (numBuckets != table.size()){
+        -:   90:                vector<Key> values;
+        -:   91:                for (size_t i = 0; i < table.size(); ++i){
+        -:   92:                    values.push_back(table.at(i));
+        -:   93:                }
+        -:   94:                HashTable newTable(numBuckets);
+        -:   95:                newTable.maxLoadFactor = this->maxLoadFactor;
+        -:   96:                for (Key i : values){
+        -:   97:                    newTable.insert(i);
+        -:   98:                }
+        -:   99:                this->table = newTable.table;
+        -:  100:                loadFactor = (float)this->numValues / (float)table.size();
+        -:  101:            }
+        -:  102:        }
+        -:  103:
+        4:  104:        void rehash(){
+        4:  105:            if (loadFactor >= maxLoadFactor){
+        8:  106:                vector<Key> values;
+       72:  107:                for (size_t i = 0; i < table.size(); ++i){
+       68:  108:                    values.push_back(table.at(i));
+        -:  109:                }
+        4:  110:                size_t newSize = table.size() * 2;
+        8:  111:                while(!isPrime(newSize)){
+        4:  112:                    newSize++;
+        -:  113:                }
+        4:  114:                HashTable newTable(newSize);
+        4:  115:                newTable.maxLoadFactor = this->maxLoadFactor;
+       72:  116:                for (Key i : values){
+       68:  117:                    newTable.insert(i);
+        -:  118:                }
+        4:  119:                this->table = newTable.table;
+        4:  120:                this->numValues = newTable.numValues;
+        4:  121:                loadFactor = (float)this->numValues / (float)table.size();
+        -:  122:            }
+        4:  123:        }
+------------------
+_ZN9HashTableINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4hashIS5_EE6rehashEv:
+        2:  104:        void rehash(){
+        2:  105:            if (loadFactor >= maxLoadFactor){
+        4:  106:                vector<Key> values;
+       36:  107:                for (size_t i = 0; i < table.size(); ++i){
+       34:  108:                    values.push_back(table.at(i));
+        -:  109:                }
+        2:  110:                size_t newSize = table.size() * 2;
+        4:  111:                while(!isPrime(newSize)){
+        2:  112:                    newSize++;
+        -:  113:                }
+        2:  114:                HashTable newTable(newSize);
+        2:  115:                newTable.maxLoadFactor = this->maxLoadFactor;
+       36:  116:                for (Key i : values){
+       34:  117:                    newTable.insert(i);
+        -:  118:                }
+        2:  119:                this->table = newTable.table;
+        2:  120:                this->numValues = newTable.numValues;
+        2:  121:                loadFactor = (float)this->numValues / (float)table.size();
+        -:  122:            }
+        2:  123:        }
+------------------
+_ZN9HashTableIiSt4hashIiEE6rehashEv:
+        2:  104:        void rehash(){
+        2:  105:            if (loadFactor >= maxLoadFactor){
+        4:  106:                vector<Key> values;
+       36:  107:                for (size_t i = 0; i < table.size(); ++i){
+       34:  108:                    values.push_back(table.at(i));
+        -:  109:                }
+        2:  110:                size_t newSize = table.size() * 2;
+        4:  111:                while(!isPrime(newSize)){
+        2:  112:                    newSize++;
+        -:  113:                }
+        2:  114:                HashTable newTable(newSize);
+        2:  115:                newTable.maxLoadFactor = this->maxLoadFactor;
+       36:  116:                for (Key i : values){
+       34:  117:                    newTable.insert(i);
+        -:  118:                }
+        2:  119:                this->table = newTable.table;
+        2:  120:                this->numValues = newTable.numValues;
+        2:  121:                loadFactor = (float)this->numValues / (float)table.size();
+        -:  122:            }
+        2:  123:        }
+------------------
+        -:  124:
+      109:  125:        bool contains(const Key& value) const {
+     2348:  126:            for (size_t i = 0; i < table.size(); ++i){
+     2279:  127:                if (table.at(i) == value){
+       40:  128:                    return true;
+        -:  129:                }
+        -:  130:            }
+       69:  131:            return false;
+        -:  132:        }
+------------------
+_ZNK9HashTableINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4hashIS5_EE8containsERKS5_:
+       50:  125:        bool contains(const Key& value) const {
+      960:  126:            for (size_t i = 0; i < table.size(); ++i){
+      930:  127:                if (table.at(i) == value){
+       20:  128:                    return true;
+        -:  129:                }
+        -:  130:            }
+       30:  131:            return false;
+        -:  132:        }
+------------------
+_ZNK9HashTableIiSt4hashIiEE8containsERKi:
+       59:  125:        bool contains(const Key& value) const {
+     1388:  126:            for (size_t i = 0; i < table.size(); ++i){
+     1349:  127:                if (table.at(i) == value){
+       20:  128:                    return true;
+        -:  129:                }
+        -:  130:            }
+       39:  131:            return false;
+        -:  132:        }
+------------------
+        -:  133:
+        1:  134:        size_t position(const Key& value) const {
+       1*:  135:            return Hash{}(value) % table.size();
+        -:  136:        }
+        -:  137:
+        4:  138:        size_t table_size() const {
+        4:  139:            return table.size();
+        -:  140:        }
+        -:  141:
+        -:  142:        float load_factor() const {
+        -:  143:            return loadFactor;
+        -:  144:        }
+        -:  145:
+        -:  146:        float max_load_factor() const {
+        -:  147:            return maxLoadFactor;
+        -:  148:        }
+        -:  149:
+        -:  150:        void max_load_factor(float newLoadFactor){
+        -:  151:            maxLoadFactor = newLoadFactor;
+        -:  152:            this->rehash();
+        -:  153:        }
+        -:  154:
+        4:  155:        void print_table(std::ostream& os=std::cout) const {
+        4:  156:            if (this->is_empty()){
+       1*:  157:                os << "<empty>\n";
+        -:  158:            }
+        -:  159:            else{
+      144:  160:                for (size_t i = 0; i < table.size(); ++i){
+      141:  161:                    os << "[" << table.at(i) << "]" << endl;
+        -:  162:                }
+        -:  163:            }
+        4:  164:        }
+------------------
+_ZNK9HashTableINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESt4hashIS5_EE11print_tableERSo:
+        3:  155:        void print_table(std::ostream& os=std::cout) const {
+        3:  156:            if (this->is_empty()){
+        1:  157:                os << "<empty>\n";
+        -:  158:            }
+        -:  159:            else{
+       96:  160:                for (size_t i = 0; i < table.size(); ++i){
+       94:  161:                    os << "[" << table.at(i) << "]" << endl;
+        -:  162:                }
+        -:  163:            }
+        3:  164:        }
+------------------
+_ZNK9HashTableIiSt4hashIiEE11print_tableERSo:
+        1:  155:        void print_table(std::ostream& os=std::cout) const {
+        1:  156:            if (this->is_empty()){
+    #####:  157:                os << "<empty>\n";
+        -:  158:            }
+        -:  159:            else{
+       48:  160:                for (size_t i = 0; i < table.size(); ++i){
+       47:  161:                    os << "[" << table.at(i) << "]" << endl;
+        -:  162:                }
+        -:  163:            }
+        1:  164:        }
+------------------
+        -:  165:        // from wikipedia on primality tests :0
+        8:  166:        bool isPrime(int n){
+        8:  167:            if (n == 2 || n == 3)
+    #####:  168:                return true;
+        -:  169:
+        8:  170:            if (n <= 1 || n % 2 == 0 || n % 3 == 0)
+        4:  171:                return false;
+        -:  172:
+        6:  173:            for (int i = 5; i * i <= n; i += 6)
+        -:  174:            {
+       2*:  175:                if (n % i == 0 || n % (i + 2) == 0)
+    #####:  176:                    return false;
+        -:  177:            }
+        -:  178:
+        4:  179:            return true;
+        -:  180:        }
+        -:  181:
+        -:  182:        
+        -:  183:};

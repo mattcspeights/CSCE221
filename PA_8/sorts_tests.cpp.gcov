@@ -1,0 +1,41 @@
+        -:    0:Source:sorts_tests.cpp
+        -:    0:Graph:sorts_tests.gcno
+        -:    0:Data:sorts_tests.gcda
+        -:    0:Runs:1
+        -:    1:#include "sorts.h"
+        -:    2:
+        1:    3:int main() {
+        2:    4:    std::vector<unsigned> testInsert1;
+        2:    5:    std::vector<std::string> testInsert2;
+        1:    6:    testInsert1.push_back(81);
+        1:    7:    testInsert1.push_back(94);
+        1:    8:    testInsert1.push_back(11);
+        1:    9:    testInsert1.push_back(96);
+        1:   10:    testInsert1.push_back(12);
+        1:   11:    testInsert1.push_back(35);
+        1:   12:    testInsert1.push_back(17);
+        1:   13:    testInsert1.push_back(95);
+        1:   14:    testInsert1.push_back(28);
+        1:   15:    testInsert1.push_back(58);
+        1:   16:    testInsert1.push_back(41);
+        1:   17:    testInsert1.push_back(75);
+        1:   18:    testInsert1.push_back(15);
+        2:   19:    std::vector<unsigned> testInsert3 = testInsert1;
+        2:   20:    std::vector<unsigned> test1 = testInsert1;
+        2:   21:    std::vector<unsigned> test2 = testInsert1;
+        1:   22:    std::vector<unsigned> test3;
+        -:   23:
+        1:   24:    insertion_sort(testInsert1);
+        1:   25:    shell_sort(testInsert3);
+        1:   26:    heap_sort(testInsert1);
+        1:   27:    merge_sort(testInsert1);
+        1:   28:    bucket_sort(testInsert1);
+        1:   29:    radix_sort(testInsert1);
+        1:   30:    radix_sort(testInsert2);
+        -:   31:    
+        1:   32:    merge_sort(test1);
+        1:   33:    quick_sort(test2);
+        1:   34:    quick_sort(test3);
+        -:   35:
+        1:   36:    return 0;
+        -:   37:}

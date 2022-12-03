@@ -1,6 +1,6 @@
         -:    0:Source:/usr/include/c++/10/bits/allocator.h
-        -:    0:Graph:hashtable_open_addressing_tests.gcno
-        -:    0:Data:hashtable_open_addressing_tests.gcda
+        -:    0:Graph:sorts_tests.gcno
+        -:    0:Data:sorts_tests.gcda
         -:    0:Runs:1
         -:    1:// Allocators -*- C++ -*-
         -:    2:
@@ -145,27 +145,21 @@
         -:  141:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
         -:  142:      // 3035. std::allocator's constructors should be constexpr
         -:  143:      _GLIBCXX20_CONSTEXPR
-       11:  144:      allocator() _GLIBCXX_NOTHROW { }
-------------------
-_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2Ev:
         6:  144:      allocator() _GLIBCXX_NOTHROW { }
 ------------------
 _ZNSaIiEC2Ev:
-        5:  144:      allocator() _GLIBCXX_NOTHROW { }
+        1:  144:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2Ev:
+        1:  144:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIjEC2Ev:
+        4:  144:      allocator() _GLIBCXX_NOTHROW { }
 ------------------
         -:  145:
         -:  146:      _GLIBCXX20_CONSTEXPR
-       16:  147:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
-       16:  148:      : __allocator_base<_Tp>(__a) { }
-------------------
-_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2ERKS5_:
        10:  147:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
        10:  148:      : __allocator_base<_Tp>(__a) { }
-------------------
-_ZNSaIiEC2ERKS_:
-        6:  147:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
-        6:  148:      : __allocator_base<_Tp>(__a) { }
-------------------
         -:  149:
         -:  150:#if __cplusplus >= 201103L
         -:  151:      // Avoid implicit deprecation.
@@ -179,13 +173,16 @@ _ZNSaIiEC2ERKS_:
         -:  159:#if __cpp_constexpr_dynamic_alloc
         -:  160:      constexpr
         -:  161:#endif
-       27:  162:      ~allocator() _GLIBCXX_NOTHROW { }
-------------------
-_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEED2Ev:
        16:  162:      ~allocator() _GLIBCXX_NOTHROW { }
 ------------------
 _ZNSaIiED2Ev:
-       11:  162:      ~allocator() _GLIBCXX_NOTHROW { }
+        1:  162:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEED2Ev:
+        1:  162:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaIjED2Ev:
+       14:  162:      ~allocator() _GLIBCXX_NOTHROW { }
 ------------------
         -:  163:
         -:  164:#if __cplusplus > 201703L
@@ -228,7 +225,7 @@ _ZStneRKSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEES7_:
     #####:  197:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
     #####:  198:      { return false; }
 ------------------
-_ZStneRKSaIiES1_:
+_ZStneRKSaIjES1_:
     #####:  197:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
     #####:  198:      { return false; }
 ------------------

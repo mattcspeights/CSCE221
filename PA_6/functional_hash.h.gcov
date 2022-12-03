@@ -1,6 +1,6 @@
         -:    0:Source:/usr/include/c++/10/bits/functional_hash.h
-        -:    0:Graph:hashtable_separate_chaining_tests.gcno
-        -:    0:Data:hashtable_separate_chaining_tests.gcda
+        -:    0:Graph:hashtable_open_addressing_tests.gcno
+        -:    0:Data:hashtable_open_addressing_tests.gcda
         -:    0:Runs:1
         -:    1:// functional_hash.h header -*- C++ -*-
         -:    2:
@@ -154,7 +154,7 @@
         -:  150:  _Cxx_hashtable_define_trivial_hash(short)
         -:  151:
         -:  152:  /// Explicit specialization for int.
-       47:  153:  _Cxx_hashtable_define_trivial_hash(int)
+       39:  153:  _Cxx_hashtable_define_trivial_hash(int)
         -:  154:
         -:  155:  /// Explicit specialization for long.
         -:  156:  _Cxx_hashtable_define_trivial_hash(long)
@@ -196,9 +196,9 @@
         -:  192:  struct _Hash_impl
         -:  193:  {
         -:  194:    static size_t
-        -:  195:    hash(const void* __ptr, size_t __clength,
+       31:  195:    hash(const void* __ptr, size_t __clength,
         -:  196:	 size_t __seed = static_cast<size_t>(0xc70f6907UL))
-        -:  197:    { return _Hash_bytes(__ptr, __clength, __seed); }
+       31:  197:    { return _Hash_bytes(__ptr, __clength, __seed); }
         -:  198:
         -:  199:    template<typename _Tp>
         -:  200:      static size_t

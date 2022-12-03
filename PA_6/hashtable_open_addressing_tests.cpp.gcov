@@ -1,0 +1,101 @@
+        -:    0:Source:hashtable_open_addressing_tests.cpp
+        -:    0:Graph:hashtable_open_addressing_tests.gcno
+        -:    0:Data:hashtable_open_addressing_tests.gcda
+        -:    0:Runs:1
+        -:    1:#include "hashtable_open_addressing.h"
+        -:    2:
+        1:    3:int main() {
+        2:    4:    HashTable<int> test1;
+        1:    5:    test1.insert(20);
+        1:    6:    test1.insert(21);
+        1:    7:    test1.insert(31);
+        1:    8:    test1.insert(2);
+        1:    9:    test1.insert(12);
+        1:   10:    test1.insert(26);
+        1:   11:    test1.insert(23);
+        1:   12:    test1.insert(35);
+        1:   13:    test1.insert(6);
+        1:   14:    test1.insert(15);
+        1:   15:    test1.insert(29);
+        1:   16:    test1.insert(14);
+        1:   17:    test1.insert(38);
+        1:   18:    test1.insert(3);
+        1:   19:    test1.insert(17);
+        1:   20:    test1.insert(22);
+        1:   21:    test1.insert(9);
+        1:   22:    test1.insert(18);
+        1:   23:    test1.insert(4);
+        1:   24:    test1.insert(40);
+        1:   25:    test1.insert(50);
+        1:   26:    test1.insert(45);
+        1:   27:    test1.insert(52);
+        1:   28:    test1.insert(89);
+        1:   29:    test1.insert(99);
+        1:   30:    test1.print_table();
+        1:   31:std::cout << "make an empty hash table with 11 buckets for strings" << std::endl;
+        1:   32:    HashTable<std::string> table(11);
+        -:   33:
+        1:   34:    std::cout << "initial size is " << table.size() << std::endl;
+        1:   35:    std::cout << "initial table size is " << table.table_size() << std::endl;
+        -:   36:
+        1:   37:    std::cout << "insert several strings" << std::endl;   
+        1:   38:    table.insert("And them who hold High Places");
+        1:   39:    table.insert("Must be the ones to start");
+        1:   40:    table.insert("To mold a new Reality");
+        1:   41:    table.insert("Closer to the Heart");
+        1:   42:    table.insert("The Blacksmith and the Artist");
+        1:   43:    table.insert("Reflect it in their Art");
+        1:   44:    table.insert("Forge their Creativity");
+        1:   45:    table.insert("Closer to the Heart");
+        1:   46:    table.insert("Philosophers and Plowmen");
+        1:   47:    table.insert("Each must know their Part");
+        1:   48:    table.insert("To sow a new Mentality");
+        1:   49:    table.insert("Closer to the Heart");
+        1:   50:    table.insert("You can be the Captain");
+        1:   51:    table.insert("I will draw the Chart");
+        1:   52:    table.insert("Sailing into Destiny");
+        1:   53:    table.insert("Closer to the Heart");
+        -:   54:
+        1:   55:    std::cout << "size is " << table.size() << std::endl;
+        1:   56:    std::cout << "table size is " << table.table_size() << std::endl;
+        -:   57:
+        -:   58:    {
+        1:   59:    std::cout << "print the table" << std::endl;
+        2:   60:    std::stringstream ss;
+        1:   61:    table.print_table(ss);
+        1:   62:    std::cout << ss.str() << std::endl;
+        -:   63:    }
+        -:   64:
+        1:   65:    std::cout << "remove \"Philosophers and Plowmen\"" << std::endl;
+        1:   66:    table.remove("Philosophers and Plowmen");
+        1:   67:    std::cout << "remove \"Each must know their Part\"" << std::endl;
+        1:   68:    table.remove("Each must know their Part");
+        -:   69:
+        1:   70:    std::cout << "size is " << table.size() << std::endl;
+        1:   71:    std::cout << "table size is " << table.table_size() << std::endl;
+        -:   72:
+        -:   73:    {
+        1:   74:    std::cout << "print the table" << std::endl;
+        2:   75:    std::stringstream ss;
+        1:   76:    table.print_table(ss);
+        1:   77:    std::cout << ss.str() << std::endl;
+        -:   78:    }
+        -:   79:
+        1:   80:    std::cout << "find \"The Blacksmith and the Artist\"" << std::endl;
+        1:   81:    size_t index = table.position("The Blacksmith and the Artist");
+        1:   82:    std::cout << " ==> cell " << index << std::endl;
+        -:   83:
+        1:   84:    std::cout << "make the table empty" << std::endl;
+        1:   85:    table.make_empty();
+        -:   86:
+        1:   87:    std::cout << "size is " << table.size() << std::endl;
+        1:   88:    std::cout << "table size is " << table.table_size() << std::endl;
+        -:   89:
+        -:   90:    {
+        1:   91:    std::cout << "print the table" << std::endl;
+        2:   92:    std::stringstream ss;
+        1:   93:    table.print_table(ss);
+        1:   94:    std::cout << ss.str() << std::endl;
+        -:   95:    }
+        1:   96:    return 0;
+        -:   97:}

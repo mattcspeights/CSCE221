@@ -1,6 +1,6 @@
         -:    0:Source:/usr/include/c++/10/bits/move.h
-        -:    0:Graph:hashtable_open_addressing_tests.gcno
-        -:    0:Data:hashtable_open_addressing_tests.gcda
+        -:    0:Graph:sorts_tests.gcno
+        -:    0:Data:sorts_tests.gcda
         -:    0:Runs:1
         -:    1:// Move, forward and identity for C++11 + swap -*- C++ -*-
         -:    2:
@@ -50,8 +50,8 @@
         -:   46:   */
         -:   47:  template<typename _Tp>
         -:   48:    inline _GLIBCXX_CONSTEXPR _Tp*
-      568:   49:    __addressof(_Tp& __r) _GLIBCXX_NOEXCEPT
-      568:   50:    { return __builtin_addressof(__r); }
+    #####:   49:    __addressof(_Tp& __r) _GLIBCXX_NOEXCEPT
+    #####:   50:    { return __builtin_addressof(__r); }
         -:   51:
         -:   52:#if __cplusplus >= 201103L
         -:   53:
@@ -77,24 +77,24 @@
         -:   73:   */
         -:   74:  template<typename _Tp>
         -:   75:    constexpr _Tp&&
-     320*:   76:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
-     320*:   77:    { return static_cast<_Tp&&>(__t); }
+      56*:   76:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
+      56*:   77:    { return static_cast<_Tp&&>(__t); }
 ------------------
-_ZSt7forwardINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEOT_RNSt16remove_referenceIS6_E4typeE:
-       92:   76:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
-       92:   77:    { return static_cast<_Tp&&>(__t); }
+_ZSt7forwardIRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEOT_RNSt16remove_referenceIS8_E4typeE:
+    #####:   76:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
+    #####:   77:    { return static_cast<_Tp&&>(__t); }
 ------------------
 _ZSt7forwardIRNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEOT_RNSt16remove_referenceIS7_E4typeE:
     #####:   76:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   77:    { return static_cast<_Tp&&>(__t); }
 ------------------
-_ZSt7forwardIRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEOT_RNSt16remove_referenceIS8_E4typeE:
-      149:   76:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
-      149:   77:    { return static_cast<_Tp&&>(__t); }
+_ZSt7forwardIjEOT_RNSt16remove_referenceIS0_E4typeE:
+       44:   76:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
+       44:   77:    { return static_cast<_Tp&&>(__t); }
 ------------------
-_ZSt7forwardIRKiEOT_RNSt16remove_referenceIS2_E4typeE:
-       79:   76:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
-       79:   77:    { return static_cast<_Tp&&>(__t); }
+_ZSt7forwardIiEOT_RNSt16remove_referenceIS0_E4typeE:
+       12:   76:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
+       12:   77:    { return static_cast<_Tp&&>(__t); }
 ------------------
         -:   78:
         -:   79:  /**
@@ -119,20 +119,16 @@ _ZSt7forwardIRKiEOT_RNSt16remove_referenceIS2_E4typeE:
         -:   98:  */
         -:   99:  template<typename _Tp>
         -:  100:    constexpr typename std::remove_reference<_Tp>::type&&
-      48*:  101:    move(_Tp&& __t) noexcept
-      48*:  102:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
+      34*:  101:    move(_Tp&& __t) noexcept
+      34*:  102:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
 ------------------
-_ZSt4moveIRSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEONSt16remove_referenceIT_E4typeEOS9_:
-        1:  101:    move(_Tp&& __t) noexcept
-        1:  102:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
+_ZSt4moveIRiEONSt16remove_referenceIT_E4typeEOS2_:
+        3:  101:    move(_Tp&& __t) noexcept
+        3:  102:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
 ------------------
-_ZSt4moveIRSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS6_EEEONSt16remove_referenceIT_E4typeEOSB_:
-        1:  101:    move(_Tp&& __t) noexcept
-        1:  102:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
-------------------
-_ZSt4moveIRNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEONSt16remove_referenceIT_E4typeEOS8_:
-       46:  101:    move(_Tp&& __t) noexcept
-       46:  102:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
+_ZSt4moveIRjEONSt16remove_referenceIT_E4typeEOS2_:
+       31:  101:    move(_Tp&& __t) noexcept
+       31:  102:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
 ------------------
 _ZSt4moveIRSaIcEEONSt16remove_referenceIT_E4typeEOS3_:
     #####:  101:    move(_Tp&& __t) noexcept
@@ -224,7 +220,7 @@ _ZSt4moveIRSaIcEEONSt16remove_referenceIT_E4typeEOS3_:
         -:  186:#else
         -:  187:    void
         -:  188:#endif
-        -:  189:    swap(_Tp& __a, _Tp& __b)
+        6:  189:    swap(_Tp& __a, _Tp& __b)
         -:  190:    _GLIBCXX_NOEXCEPT_IF(__and_<is_nothrow_move_constructible<_Tp>,
         -:  191:				is_nothrow_move_assignable<_Tp>>::value)
         -:  192:    {
@@ -232,10 +228,10 @@ _ZSt4moveIRSaIcEEONSt16remove_referenceIT_E4typeEOS3_:
         -:  194:      // concept requirements
         -:  195:      __glibcxx_function_requires(_SGIAssignableConcept<_Tp>)
         -:  196:#endif
-        -:  197:      _Tp __tmp = _GLIBCXX_MOVE(__a);
-        -:  198:      __a = _GLIBCXX_MOVE(__b);
-        -:  199:      __b = _GLIBCXX_MOVE(__tmp);
-        -:  200:    }
+        6:  197:      _Tp __tmp = _GLIBCXX_MOVE(__a);
+        6:  198:      __a = _GLIBCXX_MOVE(__b);
+        6:  199:      __b = _GLIBCXX_MOVE(__tmp);
+        6:  200:    }
         -:  201:
         -:  202:  // _GLIBCXX_RESOLVE_LIB_DEFECTS
         -:  203:  // DR 809. std::swap should be overloaded for array types.

@@ -1,45 +1,46 @@
 #include "hashtable_separate_chaining.h"
 
 int main() {
-    // HashTable<int> test1;
-    // test1.insert(20);
-    // test1.insert(21);
-    // test1.insert(31);
-    // test1.insert(2);
-    // test1.insert(12);
-    // test1.insert(26);
-    // test1.insert(23);
-    // test1.insert(35);
-    // test1.insert(6);
-    // test1.insert(15);
-    // test1.insert(29);
-    // test1.insert(14);
-    // test1.insert(38);
-    // test1.insert(3);
-    // test1.insert(17);
-    // test1.insert(22);
-    // test1.insert(9);
-    // test1.insert(18);
-    // test1.insert(4);
-    // test1.insert(40);
-    // test1.insert(50);
-    // test1.insert(45);
-    // test1.insert(52);
-    // test1.insert(89);
-    // test1.insert(99);
-    // test1.remove(99);
-    // test1.print_table();
+    HashTable<int> test1;
+    test1.insert(20);
+    test1.insert(21);
+    test1.insert(31);
+    test1.insert(2);
+    test1.insert(12);
+    test1.insert(26);
+    test1.insert(23);
+    test1.insert(35);
+    test1.insert(6);
+    test1.insert(15);
+    test1.insert(29);
+    test1.insert(14);
+    test1.insert(38);
+    test1.insert(3);
+    test1.insert(17);
+    test1.insert(22);
+    test1.insert(9);
+    test1.insert(18);
+    test1.insert(4);
+    test1.insert(40);
+    test1.insert(50);
+    test1.insert(45);
+    test1.insert(52);
+    test1.insert(89);
+    test1.insert(99);
+    test1.remove(99);
+    test1.print_table();
 
-    // HashTable<int> test3(test1);
+    HashTable<int> test3(test1);
 
-    // HashTable<int> test4 = test1;
+    HashTable<int> test4 = test1;
 
-    // HashTable<size_t> test2;
+    HashTable<size_t> test2;
 
-    // test2.insert(6);
-    // test2.insert(1);
-    // test2.insert(10);
+    test2.insert(6);
+    test2.insert(1);
+    test2.insert(10);
 
+    //****using test example from prompt****
     std::cout << "make an empty hash table with 11 buckets for strings" << std::endl;
     HashTable<std::string> table(11);
 

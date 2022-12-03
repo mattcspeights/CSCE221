@@ -14,12 +14,13 @@ class HashTable {
     size_t numValues;
     float loadFactor;
     float maxLoadFactor;
+    vector<int> takenSpots;
 
     public:
-        HashTable(): table(vector<Key>(11)), numValues(0), loadFactor(0), maxLoadFactor(.5){}
-        explicit HashTable(size_t size): table(vector<Key>(size)), numValues(0), loadFactor(0), maxLoadFactor(.5){}
+        HashTable(): table(vector<Key>(11)), numValues(0), loadFactor(0), maxLoadFactor(.5), takenSpots(vector<int>(11)){}
+        explicit HashTable(size_t size): table(vector<Key>(size)), numValues(0), loadFactor(0), maxLoadFactor(.5), takenSpots(vector<int>(size)){}
 
-        HashTable(const HashTable& other): table(other.table), numValues(0), loadFactor(other.loadFactor), maxLoadFactor(other.maxLoadFactor){}
+        HashTable(const HashTable& other): table(other.table), numValues(0), loadFactor(other.loadFactor), maxLoadFactor(other.maxLoadFactor), takenSpots(other.takenSpots){}
 
         HashTable& operator=(const HashTable& other){
             if (this == &other){
@@ -29,12 +30,16 @@ class HashTable {
             loadFactor = other.loadFactor;
             maxLoadFactor = other.maxLoadFactor;
             numValues = other.numValues;
+            takenSpots = other.takenSpots;
 
             return *this;
         }
 
         bool is_empty() const {
-            return table.empty();
+            if (numValues == 0){
+                return true;
+            }
+            return false;
         }
 
         size_t size() const {
@@ -42,24 +47,29 @@ class HashTable {
         }
 
         void make_empty(){
+            size_t cells = table.size();
             table.clear();
             loadFactor = 0;
             numValues = 0;
+            table = vector<Key>(cells);
         }
 
         void insert(const Key& value){
             if (!this->contains(value)){
                 size_t hash_value = Hash{}(value)  % table.size();
-                // if (table.at(hash_value) == 0){
-                table.at(hash_value) = value;
-                // }
-                // else{
-                //     hash_value++;
-                //     while (table.at(hash_value) == 0){
-                //         hash_value++;
-                //     }
-                //     table.at(hash_value) = value;
-                // }
+                if (takenSpots.at(hash_value) == 0){
+                    table.at(hash_value) = value;
+                    takenSpots.at(hash_value) = 1;
+
+                }
+                else{
+                    hash_value++;
+                    while (takenSpots.at(hash_value % table.size()) != 0){
+                        hash_value++;
+                    }
+                    takenSpots.at(hash_value % table.size()) = 1;
+                    table.at(hash_value % table.size()) = value;
+                }
                 numValues++;
                 loadFactor = (float)this->numValues / (float)table.size();
                 if (loadFactor >= maxLoadFactor){
@@ -70,8 +80,8 @@ class HashTable {
 
         size_t remove(const Key& value){
             for (size_t i = 0; i < table.size(); ++i){
-                if (table.at(i) == value){
-                    table.erase(table.begin() + i);
+                if (table.at(i) == value && takenSpots.at(i) != -1){
+                    takenSpots.at(i) = -1;
                     numValues--;
                     loadFactor = (float)this->numValues / (float)table.size();
                     return 1;
@@ -92,6 +102,8 @@ class HashTable {
                     newTable.insert(i);
                 }
                 this->table = newTable.table;
+                this->numValues = newTable.numValues;
+                this->takenSpots = newTable.takenSpots;
                 loadFactor = (float)this->numValues / (float)table.size();
             }
         }
@@ -113,13 +125,14 @@ class HashTable {
                 }
                 this->table = newTable.table;
                 this->numValues = newTable.numValues;
+                this->takenSpots = newTable.takenSpots;
                 loadFactor = (float)this->numValues / (float)table.size();
             }
         }
 
         bool contains(const Key& value) const {
             for (size_t i = 0; i < table.size(); ++i){
-                if (table.at(i) == value){
+                if (table.at(i) == value && takenSpots.at(i) != -1){
                     return true;
                 }
             }
@@ -153,7 +166,9 @@ class HashTable {
             }
             else{
                 for (size_t i = 0; i < table.size(); ++i){
-                    os << "[" << table.at(i) << "]" << endl;
+                    if (takenSpots.at(i) == 1){
+                        os << "[" << table.at(i) << "]" << endl;
+                    }
                 }
             }
         }
