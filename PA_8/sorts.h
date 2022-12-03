@@ -187,15 +187,17 @@ void merge_sort(std::vector<Comparable>& list){
 
 template <class Comparable>
 const Comparable& findPivot(std::vector<Comparable>& list, int left, int right){
-    int median = (left + right) / 2;
-    if (list.at(left) == list.at(median) && list.at(median) == list.at(right)){
-
+    int median;
+    if ((right + 1) % 2 == 0){
+        median = (left + right + 1) / 2;
+    }else{
+        median = (left + right) / 2;
     }
     if (list.at(median) < list.at(left) )
         std::swap( list.at(left), list.at(median) );
     if (list.at(right) < list.at(left) )
         std::swap( list.at(left), list.at(right) );
-    if (list.at(right) <= list.at(median))
+    if (list.at(right) < list.at(median))
         std::swap( list.at(median), list.at(right) );
 
     std::swap(list.at(median), list.at(right));
