@@ -1,0 +1,340 @@
+        -:    0:Source:graph.h
+        -:    0:Graph:graph_tests.gcno
+        -:    0:Data:graph_tests.gcda
+        -:    0:Runs:1
+        -:    1:#pragma once
+        -:    2:#include <cassert>
+        -:    3:#include <cmath>
+        -:    4:#include <cstddef>
+        -:    5:#include <iostream>
+        -:    6:#include <vector>
+        -:    7:#include <sstream>
+        -:    8:#include <stack>
+        -:    9:#include <queue>
+        -:   10:#include <unordered_map>
+        -:   11:#include <unordered_set>
+        -:   12:
+        -:   13:
+        -:   14:struct edge{
+        -:   15:    size_t vertexFrom;
+        -:   16:    size_t vertexTo;
+        -:   17:    double weight;
+        -:   18:
+        -:   19:    public:
+        -:   20:        edge(): vertexFrom(), vertexTo(), weight(){}
+       13:   21:        edge(size_t vertexFrom, size_t vertexTo, double weight): vertexFrom(vertexFrom), vertexTo(vertexTo), weight(weight){}
+       80:   22:        edge(const edge& other): vertexFrom(other.vertexFrom), vertexTo(other.vertexTo), weight(other.weight){}
+       16:   23:        edge& operator=(const edge& other){
+       16:   24:            vertexFrom = other.vertexFrom;
+       16:   25:            vertexTo = other.vertexTo;
+       16:   26:            weight = other.weight;
+       16:   27:            return *this;
+        -:   28:        }
+        -:   29:
+        -:   30:        bool operator==(const edge& other){
+        -:   31:            if (this->vertexTo == other.vertexTo){
+        -:   32:                return true;
+        -:   33:            }
+        -:   34:            return false;
+        -:   35:        }
+        -:   36:};
+        -:   37:
+        -:   38:
+        -:   39:struct vertex{
+        -:   40:    size_t value;
+        -:   41:    double distance;
+        -:   42:    bool known;
+        -:   43:    std::vector<edge> edges;
+        -:   44:    std::queue<edge> path;
+        -:   45:
+        -:   46:    public:
+        -:   47:        vertex(): value(), distance(INFINITY), known(false), edges(), path(){}
+        9:   48:        vertex(size_t value): value(value), distance(INFINITY), known(false), edges(), path(){}
+      72*:   49:        vertex(const vertex& other): value(other.value), distance(other.distance), known(other.known),
+       72:   50:         edges(other.edges), path(other.path){}
+        -:   51:        vertex& operator=(const vertex& other){
+        -:   52:            if (this != &other){
+        -:   53:                value = other.value;
+        -:   54:                distance = other.distance;
+        -:   55:                known = other.known;
+        -:   56:                edges = other.edges;
+        -:   57:                path = other.path;    
+        -:   58:            }
+        -:   59:            return *this;
+        -:   60:        }
+        -:   61:
+        -:   62:        bool operator==(const vertex& other){
+        -:   63:            if (this->value == other.value){
+        -:   64:                return true;
+        -:   65:            }
+        -:   66:            return false;
+        -:   67:        }
+        -:   68:
+        -:   69:};
+        -:   70:
+        -:   71:struct hashVertex{
+        -:   72:    template <class Hash=std::hash<size_t>>
+        -:   73:    std::size_t operator() (const vertex& vert) const {
+        -:   74:        size_t hash = std::hash<size_t>()(vert.value);
+        -:   75:        return hash;
+        -:   76:    }
+        -:   77:};
+        -:   78:
+        4:   79:std::vector<edge> merge(std::vector<edge>& left, std::vector<edge>& right){
+        4:   80:    size_t i = 0, j = 0, h = 0;
+        4:   81:    std::vector<edge> output;
+       10:   82:    while (i < left.size() && j < right.size()){
+        6:   83:        if (left.at(i).weight < right.at(j).weight){
+        2:   84:            output.insert(output.begin() + h, left.at(i));
+        2:   85:            ++i;
+        2:   86:            ++h;
+        -:   87:        }
+        -:   88:        else{
+        4:   89:            output.insert(output.begin() + h, right.at(j));
+        4:   90:            ++j;
+        4:   91:            ++h;
+        -:   92:        }
+        -:   93:    }
+        8:   94:    while (i < left.size()){
+        4:   95:        output.insert(output.begin() + h, left.at(i));
+        4:   96:        ++i;
+        4:   97:        ++h;
+        -:   98:    }
+        5:   99:    while (j < right.size()){
+        1:  100:        output.insert(output.begin() + h, right.at(j));
+        1:  101:        ++j;
+        1:  102:        ++h;
+        -:  103:    }
+        -:  104:
+        4:  105:    return output;
+        -:  106:}
+        -:  107:
+        -:  108:class Graph {
+        -:  109:    // TODO(student): Task 1: implement Graph to represent a digraph
+        -:  110:    std::unordered_map<size_t, vertex> adjaceny_list;
+        -:  111:    size_t numVertex;
+        -:  112:    size_t numEdges;
+        -:  113:
+        -:  114:    public:
+        -:  115:        // constructors
+        4:  116:        Graph(): adjaceny_list(0), numVertex(0), numEdges(0) {}
+        -:  117:        Graph(const Graph& other): adjaceny_list(other.adjaceny_list), numVertex(other.numVertex),
+        -:  118:         numEdges(other.numEdges){}
+        -:  119:        Graph& operator=(const Graph& other){
+        -:  120:            if (this != & other){
+        -:  121:                this->adjaceny_list = other.adjaceny_list;
+        -:  122:                numVertex = other.numVertex;
+        -:  123:                numEdges = other.numEdges;
+        -:  124:            }
+        -:  125:            return *this;
+        -:  126:        }
+        -:  127:
+        -:  128:        // accessors
+        2:  129:        size_t vertex_count() const { return numVertex;}
+        2:  130:        size_t edge_count() const { return numEdges;}
+        -:  131:
+       65:  132:        bool contains_vertex(size_t id) const {
+        -:  133:            try{
+       65:  134:                this->adjaceny_list.at(id);
+       12:  135:            }catch(const std::out_of_range& e){
+       12:  136:                return false;
+        -:  137:            }
+       53:  138:            return true;
+        -:  139:        }
+        -:  140:
+       17:  141:        bool contains_edge(size_t src, size_t dest) const {
+       17:  142:            if (this->contains_vertex(src)){
+       17:  143:                std::vector<edge> edgeList = adjaceny_list.at(src).edges;
+        -:  144:
+       26:  145:                for (edge& value : edgeList){
+       11:  146:                    if (value.vertexTo == dest){
+        2:  147:                        return true;
+        -:  148:                    }
+        -:  149:                }
+        -:  150:            }
+       15:  151:            return false;
+        -:  152:        }
+        -:  153:
+        2:  154:        double cost(size_t src, size_t dest) const {
+        2:  155:            if (this->contains_edge(src, dest)){
+        2:  156:                std::vector<edge> edgeList = adjaceny_list.at(src).edges;
+        -:  157:
+       1*:  158:                for (edge& value : edgeList){
+        1:  159:                    if (value.vertexTo == dest){
+        1:  160:                        return value.weight;
+        -:  161:                    }
+        -:  162:                }
+        -:  163:
+    #####:  164:                return INFINITY;
+        -:  165:            }
+        -:  166:            else {
+        1:  167:                return INFINITY;
+        -:  168:            }
+        -:  169:        }
+        -:  170:
+        -:  171:        // modifiers
+       10:  172:        bool add_vertex(size_t id){
+       10:  173:            if (this->contains_vertex(id)){
+        1:  174:                return false;
+        -:  175:            }
+        9:  176:            vertex newVertex(id);
+        9:  177:            this->adjaceny_list.insert({id, newVertex});
+        9:  178:            numVertex++;
+        9:  179:            return true;
+        -:  180:        }
+        -:  181:
+       14:  182:        bool add_edge(size_t src, size_t dest, double weight=1){
+       14:  183:            if (this->contains_edge(src, dest)){
+    #####:  184:                return false;
+        -:  185:            }
+       14:  186:            if (!this->contains_vertex(src) || !this->contains_vertex(dest)){
+        1:  187:                return false;
+        -:  188:            }
+       13:  189:            edge newEdge(src, dest, weight);
+       13:  190:            bool addedEdge = false;
+       13:  191:            std::vector<edge>& edgeList = this->adjaceny_list.at(src).edges;
+       13:  192:            if (edgeList.size() == 0){
+        7:  193:                edgeList.push_back(newEdge);
+        7:  194:                addedEdge = true;
+        -:  195:            }
+        -:  196:            else{
+        9:  197:                for (size_t i = 0; i < edgeList.size(); ++i){
+        6:  198:                    if (newEdge.weight < edgeList.at(i).weight){
+        3:  199:                        edgeList.insert(edgeList.begin() + i, newEdge);
+        3:  200:                        addedEdge = true;
+        3:  201:                        break;
+        -:  202:                    }
+        -:  203:                }
+        -:  204:            }
+       13:  205:            if (!addedEdge){
+        3:  206:                edgeList.push_back(newEdge);
+        -:  207:            }
+       13:  208:            numEdges++;
+       13:  209:            return true;
+        -:  210:        }
+        -:  211:
+        2:  212:        bool remove_vertex(size_t id){
+        2:  213:            if (!this->contains_vertex(id)){
+        1:  214:                return false;
+        -:  215:            }
+        1:  216:            std::cout << this->adjaceny_list.at(id).edges.size() << std::endl;
+        1:  217:            numEdges -= this->adjaceny_list.at(id).edges.size();
+        1:  218:            this->adjaceny_list.erase(id);
+        1:  219:            numVertex--;
+        7:  220:            for (auto& keyVal : adjaceny_list){
+       16:  221:                for(auto it = keyVal.second.edges.begin(); it != keyVal.second.edges.end();){
+       10:  222:                    if(it->vertexTo == id){
+        2:  223:                        it = keyVal.second.edges.erase(it);
+        2:  224:                        numEdges--;
+        -:  225:                    }
+        -:  226:                    else
+        8:  227:                        ++it;
+        -:  228:                }
+        -:  229:            }
+        1:  230:            return true;
+        -:  231:        }
+        -:  232:
+        -:  233:        bool remove_edge(size_t src, size_t dest){
+        -:  234:            if (!this->contains_edge(src, dest)){
+        -:  235:                return false;
+        -:  236:            }
+        -:  237:            bool foundEdge = false;
+        -:  238:            std::vector<edge> edgeList = adjaceny_list.at(src).edges;
+        -:  239:            for(auto it = edgeList.begin(); it != edgeList.end();){
+        -:  240:                if(it->vertexTo == dest){
+        -:  241:                    it = edgeList.erase(it);
+        -:  242:                    numEdges--;
+        -:  243:                }
+        -:  244:                else
+        -:  245:                    ++it;
+        -:  246:            }
+        -:  247:            return foundEdge;
+        -:  248:        }
+        -:  249:
+        -:  250:    void printGraph(){
+        -:  251:        for (auto& [key, value] : this->adjaceny_list){
+        -:  252:            std::cout << value.value << std::endl;
+        -:  253:        }
+        -:  254:    }
+        -:  255:
+        -:  256:    // TODO(student): Task 2: implement Dijkstra's algorithm
+        1:  257:    void dijkstra(size_t source_id){
+        1:  258:        if (!this->contains_vertex(source_id)){
+    #####:  259:            return;
+        -:  260:        }
+        1:  261:        bool done = false;
+        1:  262:        if (this->numVertex == 0){
+    #####:  263:            done = true;
+        -:  264:        }
+        1:  265:        this->adjaceny_list.at(source_id).known = true;
+        1:  266:        std::vector<edge> currentEdges = this->adjaceny_list.at(source_id).edges;
+        1:  267:        std::queue<edge> path;
+        1:  268:        double currentDistance = 0;
+        5:  269:        while (!done){
+        -:  270:            // traverse to closest vertex
+        4:  271:            edge& closestEdge = currentEdges.at(0);
+       7*:  272:            while (adjaceny_list.at(closestEdge.vertexTo).known){
+        3:  273:                currentEdges.erase(currentEdges.begin());
+        3:  274:                if (currentEdges.size() == 0){
+    #####:  275:                    return;
+        -:  276:                }
+        3:  277:                closestEdge = currentEdges.at(0);
+        -:  278:            }
+        -:  279:            //clear path queue if necessary
+        4:  280:            if (closestEdge.vertexFrom == source_id){
+        3:  281:                while (!path.empty()){
+        1:  282:                    path.pop();
+        -:  283:                }
+        2:  284:                currentDistance = 0;
+        -:  285:            }
+        4:  286:            vertex& currentVertex = this->adjaceny_list.at(closestEdge.vertexTo);
+        4:  287:            currentDistance += closestEdge.weight;
+        -:  288:            // enqueue edge taken onto new vertex
+        4:  289:            path.push(closestEdge);
+        4:  290:            currentVertex.path = path;
+        -:  291:            // update distance
+        4:  292:            currentVertex.distance = currentDistance;
+        -:  293:            // add new edges into current edges
+        4:  294:            currentEdges = merge(currentEdges, currentVertex.edges);
+        4:  295:            currentVertex.known = true;
+        4:  296:            done = true;
+        4:  297:            currentEdges.erase(currentEdges.begin());
+       12:  298:            for (auto& [key, vert] : adjaceny_list){
+      12*:  299:                if (!vert.known){
+        4:  300:                    done = false;
+        4:  301:                    break;
+        -:  302:                }
+        -:  303:            }
+        4:  304:            if (currentEdges.size() == 0){
+        1:  305:                done = true;
+        -:  306:            }
+        -:  307:        }
+        -:  308:    }
+        -:  309:
+        -:  310:    double distance(size_t id) const {
+        -:  311:        double dist;
+        -:  312:        try{
+        -:  313:            dist = this->adjaceny_list.at(id).distance;
+        -:  314:        }catch(const std::out_of_range& e){
+        -:  315:                return INFINITY;
+        -:  316:            }
+        -:  317:        return dist;
+        -:  318:    }
+        -:  319:
+        7:  320:    void print_shortest_path(size_t dest_id, std::ostream& os=std::cout) const {
+        7:  321:        if (!this->contains_vertex(dest_id)){
+        1:  322:            os << "<no path>\n";
+        1:  323:            return;
+        -:  324:        }
+       12:  325:        vertex vertex = this->adjaceny_list.at(dest_id);
+       13:  326:        while (!vertex.path.empty()){
+        7:  327:            if (vertex.path.size() != 1){
+        3:  328:                os << vertex.path.front().vertexFrom << " --> ";
+        -:  329:            }
+        -:  330:            else{
+        4:  331:                os << vertex.path.front().vertexFrom << " --> " << dest_id << " distance: " << vertex.distance;
+        -:  332:            }
+        7:  333:            vertex.path.pop();
+        -:  334:        }
+        -:  335:    }
+        -:  336:};
